@@ -1,0 +1,10 @@
+    li x3,0x20    #load x3 with random test value
+    li x7,2        #store 'n' (2 in this case)
+    csrr x1,minstret #read value of minstret into x1
+    addi x2,x3,7    #instructions
+    mul  x4,x2,x3
+    csrr x5,minstret    #read new value of minstret into x5
+    sub x6,x5,x1      #sub rd,rs1,rs2 # rd=rs1-rs2   
+    bne x6,x7 end     #end shouldnt get executed as minstret has to be incremented by 2     
+end: 
+    addi x2,x0,1
