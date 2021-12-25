@@ -1,0 +1,9 @@
+ li x4,0x01
+ li x8,0x00
+ li x5,0x02
+ li x6,0x03
+    
+ csrrw x3,misa.M,0x1     #setting it to 1 and trying to execute multiply
+ mul x7,x6,x5                #legal
+ csrrw x3,misa.M,0x0        #setting it to 0 and trying to execute multiply
+ mul x7,x6,x5        #should raise interrupt
