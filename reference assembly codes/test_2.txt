@@ -1,0 +1,69 @@
+##tests for warl
+##warl registers:
+##mtvec,misa,mstatus(mpp,fs,mprv),mscratch,mepc,mtval,mcycle,minstret,mideleg,medeleg,mhpmcounter3,mhpmcounter4,mhpmevent3,mhpmevent4
+
+#misa.mxl
+li x2,0x2                #load the default value of misa.mxl into x2
+csrrwi x1,misa.mxl,0x4    #Load a random test value
+bne x2,x1,loop1           #if old value and new value don't match,loop to loop1
+bne x1,misa.mxl,loop2    #if old value and current value in misa.mxl dont match,goto loop2
+loop1:
+    addi x3,x0,1
+ loop2:
+     addi  4,x0,1
+     
+     
+#misa.extension
+li x4,0xffffffffffffffff    #0xfff is our test value
+and x4,x4,bitmask            #test if test value is legal value
+ori x4,x4,0x8000000000141105    #(write_val&bitmask)|(default_val&~bitmask)
+beq    x4,bitmask,loop    
+loop:
+    csrrw x5,misa[25:0],x4        #write to misa if value is legal
+
+  
+ #mtvec
+li x4,0xfffffffffffffffff    #load test value
+and x4,x4,bitmask            #test if test_val is legal value
+ori x4,x4,0x000000000000000
+beq    x4,bitmask,loop
+loop:
+    csrrw x5,mtvec[61:0],x4 #write to mtvec if value is legal
+
+#mscratch
+li x4,0xffffffff                        
+csrrw x3,mscratch[0:63],x4
+bne    mscratch[0:63],x3,loop        #performing illegal write
+loop:
+    addi x5,x0,1    
+
+# mstatus, fs
+li x7,0x34
+li x8,0x56
+csrrw x4,fs[1:0],0x04            #writing illegal value to fs
+be x4,fs[1:0],loop1
+csrrw x4,fs[1:0],0x00            #setting fs to 0 and trying to execute float inst after that
+fmul x7,x8
+loop1:
+    addi x7,x0,1
+     
+ #mstatus, mprv
+li x7,0x34
+li x8,0x56
+csrrw x4,mprv[0:0],0x05                #illegal write
+be x4,mprv[0:0],loop1
+csrrw x4,mprv[0:0],0x00                #legal write
+be x4,mprv[0:0],loop2
+loop1:
+   addi x7,x0,1 
+loop2: 
+    addi x8,x0,1  
+    
+
+#mepc
+li x4,0xfffffffffffffffff
+and x4,x4,bitmask
+ori x4,x4,0x000000000000000
+beq    x4,bitmask,loop
+loop:
+    csrrw x5,mepc[63:0],x4
