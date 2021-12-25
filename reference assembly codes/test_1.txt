@@ -1,0 +1,85 @@
+    
+#1 - mvendorid,marchid,mimpid,mhartid
+#mvendorid: 0x00
+#marchid: 5
+#mimpid: 0
+#mhartid: 0
+    li x3,0x300
+    li x2,0x0
+  #csrrw
+    csrrw x5,mvendorid,x3
+    bne x5,mvendorid,loop     #loop shouldnt be executed
+    
+    csrrw x5,marchid,x3
+    bne x5,mvarchid,loop        #loop shouldnt be executed
+    
+    csrrw x5,mimpid,x3
+    bne x5,mimpid,loop          #loop shouldnt be executed
+    
+    csrrw x5,mhartid,x3
+    bne x5,mhartid,loop        #loop shouldnt be executed
+#csrrs                    
+    csrrs x5,mvendorid,x3
+    bne x5,mvendorid,loop        #loop shouldnt be executed
+    
+    csrrs x5,marchid,x3
+    bne x5,marchid,loop        #loop shouldnt be executed
+    
+    csrrs x5,mimpid,x3
+    bne x5,mimpid,loop        #loop shouldnt be executed
+    
+   csrrs x5,mhartid,x3
+    bne x5,mhartid,loop        #loop shouldnt be executed 
+    
+    #cssrc
+    csrrc x5,mvendorid,x3
+    bne x5,mvendorid,loop        #loop shouldnt be executed
+    
+    csrrc x5,marchid,x3
+    bne x5,marchid,loop        #loop shouldnt be executed
+    
+    csrrc x5,mimpid,x3
+    bne x5,mimpid,loop        #loop shouldnt be executed
+    
+    csrrc x5,mhartid,x3
+    bne x5,mhartid,loop        #loop shouldnt be executed
+#immediate 
+    #csrrwi
+    csrrwi x5,mvendorid,0x400
+    bne x5,mvendorid,loop     #loop shouldnt be executed
+    
+    csrrwi x5,marchid,0x400
+    bne x5,mvarchid,loop        #loop shouldnt be executed
+    
+    csrrwi x5,mimpid,0x400
+    bne x5,mimpid,loop          #loop shouldnt be executed
+    
+    csrrwi x5,mhartid,0x400
+    bne x5,mhartid,loop        #loop shouldnt be executed
+#csrrsi                    
+    csrrsi x5,mvendorid,0x400
+    bne x5,mvendorid,loop        #loop shouldnt be executed
+    
+    csrrsi x5,marchid,0x400
+    bne x5,marchid,loop        #loop shouldnt be executed
+    
+    csrrsi x5,mimpid,0x400
+    bne x5,mimpid,loop        #loop shouldnt be executed
+    
+   csrrsi x5,mhartid,0x400
+    bne x5,mhartid,loop        #loop shouldnt be executed 
+    
+    #cssrci
+    csrrci x5,mvendorid,0x400
+    bne x5,mvendorid,loop        #loop shouldnt be executed
+    
+    csrrci x5,marchid,0x400
+    bne x5,marchid,loop        #loop shouldnt be executed
+    
+    csrrci x5,mimpid,0x400
+    bne x5,mimpid,loop        #loop shouldnt be executed
+    
+    csrrci x5,mhartid,0x400
+    bne x5,mhartid,loop        #loop shouldnt be executed
+loop:
+    addi x2,x2,0x1    
