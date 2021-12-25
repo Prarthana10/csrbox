@@ -1,0 +1,5 @@
+    PC 0x2000: csrrc x7,misa, 0x4   # disables C ext
+    PC 0x2004: c.li x7,0x500         #x7 willl have old misa value
+    
+    PC 0x2002: csrrc x7,misa, 0x4   # ignores disabling C ext
+    PC 0x2006: c.li x7,0x500   #didnt know how to use c.li, assumed stuffs
