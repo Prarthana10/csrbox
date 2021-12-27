@@ -18,11 +18,11 @@ We have verified the Machine CSRs.
 ## File Structure
 
 ```bash
-├── reference assembly codes --this folder contains assembly codes which act as the reference for each python test script
+├── reference assembly codes
 │   ├── test1.txt
-│   └── test2.txt
-│   └── test3.txt
-│   └── test4.txt
+|   └── test2.txt
+|   └── test3.txt
+|   └── test4.txt
 │   └── test5.txt
 ├── README.md -- Describes the idea behind each test
 ├── uatg_csrbox_read_only_registers.py -- Generates ASM to check whether the CSRs hold the same value,even after using different csr instructions
@@ -46,6 +46,8 @@ We have verified the Machine CSRs.
 
 - Illegal exception has to be raised for writing into those registers
 
+- For the CSRs which are read-only we are checking if the CSRs hold the same value even after writing a different value using all CSR instructions. 
+
 #### uatg_csrbox_warl_test_misa.py
 - This code tests generates tests to write to check the WARL property of the ```misa``` register.
 
@@ -54,16 +56,18 @@ We have verified the Machine CSRs.
 - Legal values for the two fields are obtained from the ISA spec. 
 
 - For ```misa.mxl```,illegal write is performed.A branch condition has been used to check if the write was successful.Contents of register ```x3``` will be incremented in case the value was changed.
+
+- We are testing if the reset value of the misa is alegal value and if it matches the reset value in the ISA spec.
+ 
 - Similarly for ```misa.extensions```, the test write_val is first checked if it is legal.If the value is legal,its written into ```misa.extensions```.  
 
 #### uatg_csrbox_warl_test_mtvec.py
-- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+- This code tests generates tests to write to check the WARL property of the ```mtvec``` register.
 
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+- Machine Trap Vector Base Address (MTVEC) register is used to store the address of the Trap handler.
+- The MTVEC register has the address of the trap handler. When a trap occurs (and is to be handled, not ignored), the Hardware set’s the program counter (PC) set to the value in the MTVEC register. This causes a jump to the first instruction in the trap handler routine.
+- We are testing if the reset value of the mtvec is alegal value and if it matches the reset value in the ISA spec.
 
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
-
-- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_warl_test_mstatus.py
 - ```mstatus``` register encodes the contents of the floating point/accelerator architectural state.
@@ -77,13 +81,24 @@ We have verified the Machine CSRs.
 
 
 #### uatg_csrbox_warl_test_mscratch_mepc.py
-- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+- This code tests generates tests to write to check the WARL property of the ```mscratch``` and ```mepc``` register
+- Machine Exception Program Counter (MEPC) is an XLEN-bit read/write register, which holds
+the address of the instruction which resulted in a trap.
+A Scratch Register (MSCRATCH) for Machine Mode Trap Handler. This register allows us to store
+the context of trap handlers in other privilege levels. This is of much use only in case of system
+switching privilege modes.
+-In order to prevent overwrite and lose of the previous values, when a machine mode trap
+handler is invoked, the use of at least one general purpose register is needed.
+• MSCRATCH gives the software a register loaded with a base value, which can subsequently be
+used to save all remaining processor state.
+• Mostly, it may contain a frame or stack pointer to the “register save area”
+- When a trap (exception) is taken into machine mode, the virtual address of the instruction which
+resulted in an exception, is written into the mepc register. It serves the same purpose for the
+exception handler that the return address (ra) register serves for subroutine calls. There can be
+certain traps, which can lead to system halt. In that case, MEPC cannot be used to return back.
+- MEPC register cannot hold a program counter (pc) value that would cause an Instruction Address
+Misaligned exception.
 
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
-
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
-
-- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_csr_specific_misa.py
 - This code tests 
@@ -95,22 +110,24 @@ We have verified the Machine CSRs.
 - Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_misa_c_ext.py
-- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+- This code tests generates tests to write 
 
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+- 
 
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+-Disabling the misa.C extension requires the CSR instruction to be 4 byte aligned. else the disabling will be ignored. 
 
-- Illegal exception has to be raised for writing into those registers
+- 
 
 #### uatg_csrbox_minstret.py
-- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+- This code tests generates tests to write 
 
 - The above registers are read-only and the values are pre-coded and obtained from the ISA spec
 
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+-We read minstret, execute n operations and check if the minstret value must be +n from the previous readings
 
-- Illegal exception has to be raised for writing into those registers
+- 
+
+- 
 
 
 ## Contributors
