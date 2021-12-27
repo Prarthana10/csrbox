@@ -30,10 +30,6 @@ We have verified the Machine CSRs.
 └── uatg_csrbox_minstret.py -- Generates ASM to check whether minstret is being correctly incremented
 ```
 
-# Tests performed
-
-
-
 # Description of files
 
 # Contributors
