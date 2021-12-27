@@ -55,11 +55,11 @@ We have verified the Machine CSRs.
 
 - Legal values for the two fields are obtained from the ISA spec. 
 
-- For ```misa.mxl```,illegal write is performed.A branch condition has been used to check if the write was successful.Contents of register ```x3``` will be incremented in case the value was changed.
+- For ```misa.mxl```,illegal write is performed.A branch condition has been used to check if the write was successful. Contents of register x3 will be incremented in case the value was changed.
 
 - We are testing if the reset value of the misa is alegal value and if it matches the reset value in the ISA spec.
  
-- Similarly for ```misa.extensions```, the test write_val is first checked if it is legal.If the value is legal,its written into ```misa.extensions```.  
+- Similarly for ```misa.extensions```, the test write_val is first checked if it is legal. If the value is legal,its written into ```misa.extensions```.  
 
 #### uatg_csrbox_warl_test_mtvec.py
 - This code tests generates tests to check the WARL property of the ```mtvec``` register.
