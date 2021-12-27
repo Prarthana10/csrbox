@@ -20,9 +20,9 @@ We have verified the Machine CSRs.
 ```bash
 ├── reference assembly codes
 │   ├── test1.txt
-|   └── test2.txt
-|   └── test3.txt
-|   └── test4.txt
+│   └── test2.txt
+│   └── test3.txt
+│   └── test4.txt
 │   └── test5.txt
 ├── README.md -- Describes the idea behind each test
 ├── uatg_csrbox_read_only_registers.py -- Generates ASM to check whether the CSRs hold the same value,even after using different csr instructions
