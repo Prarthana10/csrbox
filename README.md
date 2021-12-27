@@ -66,13 +66,15 @@ We have verified the Machine CSRs.
 - Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_warl_test_mstatus.py
-- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+- ```mstatus``` register encodes the contents of the floating point/accelerator architectural state.
 
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+- Setting the ```mstatus.fs``` will enable floating point instructions and clearing it will disable the same.```mstatus.fs``` is also WARL.  
 
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+- We have conducted one test by making an illegal write operation to the fs bits.
 
-- Illegal exception has to be raised for writing into those registers
+- Another test is performed by executing ```fmul``` instruction after clearing the fs bits,and executing it again by setting the fs bits. The former should raise an illegal trap.
+- ```mstatus.mprv``` ,bits that modify priviledge levels for registers,is also WARL, which is tested by performing an illegal write operation.
+
 
 #### uatg_csrbox_warl_test_mscratch_mepc.py
 - This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
