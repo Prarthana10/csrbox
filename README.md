@@ -18,7 +18,7 @@ We have verified the Machine CSRs.
 ## File Structure
 
 ```bash
-├── reference assembly codes
+├── reference assembly codes --this folder contains assembly codes which act as the reference for each python test script
 │   ├── test1.txt
 │   └── test2.txt
 │   └── test3.txt
