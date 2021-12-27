@@ -6,7 +6,7 @@ More information about CSRs in RISC-V can be found here: [RISC-V ISA MANUAL](htt
 
 To generate the assembly test list from the python scripts, use the [UATG tool](https://uatg.readthedocs.io/en/stable/overview.html). Follow the steps given [here](https://uatg.readthedocs.io/en/stable/installation.html).
 
-# CSR 
+## CSR 
 The Control and Status Register (CSR) are system registers provided by RISC-V to control and monitor system states. CSRs can be read, written and bits can be set/cleared. RISC-V provides distinct CSRs for every privilege level. Each CSR has a special name and is assigned a unique function.
 Reading and/or writing to a CSR will affect processor operation. CSR’s are used in operations, where a normal register cannot be used. For example, knowing the system configuration, handling exceptions, switching to different privilege modes and handling interrupts are some tasks for which a CSR is needed. The CSR cannot be read/written the way a general register can. A special set of instructions called csr instructions are used to facilitate this process. CSR instructions require an intermediate base register to perform any operation on CSR registers. Further, it is possible to write immediate values to CSR registers. 
 
@@ -15,7 +15,7 @@ We have verified the Machine CSRs.
 
 
 
-# File Structure
+## File Structure
 
 ```bash
 ├── README.md -- Describes the idea behind each test
@@ -29,9 +29,34 @@ We have verified the Machine CSRs.
 └── uatg_csrbox_minstret.py -- Generates ASM to check whether minstret is being correctly incremented
 ```
 
-# Description of files
+## Description of files
+#### uatg_csrbox_read_only_registers.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
 
-# Contributors
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
+#### uatg_csrbox_warl_test_misa.py
+
+#### uatg_csrbox_warl_test_mtvec.py
+
+#### uatg_csrbox_warl_test_mstatus.py
+
+#### uatg_csrbox_warl_test_mscratch_mepc.py
+
+#### uatg_csrbox_csr_specific_misa.py
+
+#### uatg_csrbox_misa_c_ext.py
+
+#### uatg_csrbox_minstret.py
+
+
+
+
+
+## Contributors
 Prarthana Bhat (<prarthana.bhat20@gmail.com> )
 
 B.N. Vismaya( <vismayanavile@gmail.com> )
