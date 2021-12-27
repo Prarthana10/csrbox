@@ -1,7 +1,3 @@
-#this code tests the read only informational registers
-#there are 4 such registers-mvendorid, marchid,mimpid,mhartid
-#Values are obtained from the isa spec
-
 
 from yapsy.IPlugin import IPlugin
 from ruamel.yaml import YAML
