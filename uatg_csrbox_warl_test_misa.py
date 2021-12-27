@@ -1,8 +1,3 @@
-#this code tests the registers marked WARL
-#WARL registers:
-#mtvec,misa,mstatus(mpp,fs,mprv),mscratch,mepc,mtval,mcycle,minstret,mideleg,medeleg,mhpmcounter3,mhpmcounter4,mhpmevent3,mhpmevent4
-#Range of legal values and illegal values are obtained from the ISA spec
-#Following is test
 from yapsy.IPlugin import IPlugin
 from ruamel.yaml import YAML
 import uatg.regex_formats as rf
