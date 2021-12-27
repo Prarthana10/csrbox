@@ -18,7 +18,17 @@ We have verified the Machine CSRs.
 
 # File Structure
 
-
+```bash
+├── README.md -- Describes the idea behind each test
+├── uatg_csrbox_read_only_registers.py -- Generates ASM to check whether the CSRs hold the same value,even after using different csr instructions
+├── uatg_csrbox_warl_test_misa.py -- Generates ASM to check whether reset value of misa matches the ISA spec
+├── uatg_csrbox_warl_test_mtvec.py -- Generates ASM to check whether reset value of mtvec matches the ISA spec
+├── uatg_csrbox_warl_test_mscratch_mepc.py -- Generates ASM to check whether reset value of mscratch,mepc matches the ISA spec
+├── uatg_csrbox_warl_test_mstatus.py -- Generates ASM to check whether reset value of mstatus matches the ISA spec
+├── uatg_csrbox_csr_specific_misa.py -- Generates ASM to check the .M extension of misa
+├── uatg_csrbox_misa_c_ext.py -- Generates ASM to check .C extension of misa
+└── uatg_csrbox_minstret.py -- Generates ASM to check whether minstret is being correctly incremented
+```
 
 # Tests performed
 
