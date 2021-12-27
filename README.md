@@ -18,6 +18,12 @@ We have verified the Machine CSRs.
 ## File Structure
 
 ```bash
+├── reference assembly codes
+│   ├── test1.txt
+|   └── test2.txt
+|   └── test3.txt
+|   └── test4.txt
+│   └── test5.txt
 ├── README.md -- Describes the idea behind each test
 ├── uatg_csrbox_read_only_registers.py -- Generates ASM to check whether the CSRs hold the same value,even after using different csr instructions
 ├── uatg_csrbox_warl_test_misa.py -- Generates ASM to check whether reset value of misa matches the ISA spec
@@ -27,6 +33,7 @@ We have verified the Machine CSRs.
 ├── uatg_csrbox_csr_specific_misa.py -- Generates ASM to check the .M extension of misa
 ├── uatg_csrbox_misa_c_ext.py -- Generates ASM to check .C extension of misa
 └── uatg_csrbox_minstret.py -- Generates ASM to check whether minstret is being correctly incremented
+
 ```
 
 ## Description of files
@@ -38,22 +45,70 @@ We have verified the Machine CSRs.
 - All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
 
 - Illegal exception has to be raised for writing into those registers
+
 #### uatg_csrbox_warl_test_misa.py
+- This code tests generates tests to write to check the WARL property of the ```misa``` register.
+
+- ```misa``` has two fields, ```mxl[1:0]``` and an extensions field which is 26 bits wide,which have the WARL property.
+
+- Legal values for the two fields are obtained from the ISA spec. 
+
+- For ```misa.mxl```,illegal write is performed.A branch condition has been used to check if the write was successful.Contents of register ```x3``` will be incremented in case the value was changed.
+- Similarly for ```misa.extensions```, the test write_val is first checked if it is legal.If the value is legal,its written into ```misa.extensions```.  
 
 #### uatg_csrbox_warl_test_mtvec.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_warl_test_mstatus.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_warl_test_mscratch_mepc.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_csr_specific_misa.py
+- This code tests 
+
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_misa_c_ext.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
+
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
+
+- Illegal exception has to be raised for writing into those registers
 
 #### uatg_csrbox_minstret.py
+- This code tests generates tests to write to read-only registers: ```mvendorid```, ```marchid``` ,```mimpid```,```mhartid```
 
+- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
 
+- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
 
+- Illegal exception has to be raised for writing into those registers
 
 
 ## Contributors
