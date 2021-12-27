@@ -7,10 +7,16 @@ More information about CSRs in RISC-V can be found here: [RISC-V ISA MANUAL](htt
 To generate the assembly test list from the python scripts, use the [UATG tool](https://uatg.readthedocs.io/en/stable/overview.html). Follow the steps given [here](https://uatg.readthedocs.io/en/stable/installation.html).
 
 # CSR Registers
+The CSR box is an external python tool
+
 
 # File Structure
 
+
+
 # Tests performed
+
+
 
 # Description of files
 
