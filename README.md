@@ -69,10 +69,10 @@ We have verified the Machine CSRs.
 - The ```mtvec``` register has the address of the trap handler. When a trap occurs, the hardware set’s the program counter (PC) set to the value in the ```mtvec``` register. This causes a jump to the first instruction in the trap handler routine.
 
 - Some basic properties of ```mtvec``` register is:
-      -  BASE must always be aligned on a 4-byte boundary
-      -  BASE can be hardwired to hold a constant
-      -  MODE is irect then pc is set to BASE
-      -  MODE is vectored when pc is set to BASE + 4*(cause)
+  -  BASE must always be aligned on a 4-byte boundary
+  -  BASE can be hardwired to hold a constant
+  -  MODE is irect then pc is set to BASE
+  -  MODE is vectored when pc is set to BASE + 4*(cause)
 
 - We are testing if the reset value of the ```mtvec``` is a legal value and if it matches the reset value in the ISA spec.
 
@@ -86,7 +86,7 @@ We have verified the Machine CSRs.
 
 - Another test is performed by executing ```fmul``` instruction after clearing the fs bits,and executing it again by setting the fs bits. The former should raise an illegal trap.
 
-- ```mstatus.mprv``` ,bits that modify priviledge levels for registers,is also WARL, which is tested by performing an illegal write operation.
+- ```mstatus.mprv``` (bits that modify priviledge levels for registers)is also WARL, which is tested by performing an illegal write operation.
 
 
 #### uatg_csrbox_warl_test_mscratch_mepc.py
@@ -95,9 +95,9 @@ We have verified the Machine CSRs.
 - Machine Exception Program Counter (MEPC) is an XLEN-bit read/write register, which holds the address of the instruction which resulted in a trap.
 
 - Some basic properties about ```mepc``` register:
-      - It is written with virtual address of the instruction at which a trap was taken in machine mode.
-      - ```mepc``` = 0 always
-      - When IALIGN = 32, ```mepc```[1:0] = 0
+  - It is written with virtual address of the instruction at which a trap was taken in machine mode.
+  - ```mepc``` = 0 always
+  - When IALIGN = 32, ```mepc[1:0]``` = 0
 
 - ```mepc``` register cannot hold a program counter (pc) value that would cause an Instruction Address Misaligned exception.
 
