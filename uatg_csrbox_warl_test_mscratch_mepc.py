@@ -1,7 +1,3 @@
-#this code tests the read only informational registers
-#there are 4 such registers-mvendorid, marchid,mimpid,mhartid
-#Values are obtained from the isa spec
-
 
 from yapsy.IPlugin import IPlugin
 from ruamel.yaml import YAML
@@ -10,7 +6,7 @@ from typing import Dict, Union, Any, List
 import re
 import os
 
-class uatg_csrbox_warl_test_mscratch_mepc IPlugin):
+class uatg_csrbox_warl_test_mscratch_mepc (IPlugin):
 	def __init__(self):
 		super().__init__()
 		pass
