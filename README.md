@@ -49,7 +49,7 @@ We have verified the Machine CSRs.
 - For the CSRs which are read-only we are checking if the CSRs hold the same value even after writing a different value using all CSR instructions. 
 
 #### uatg_csrbox_warl_test_misa.py
-- This code tests generates tests to write to check the WARL property of the ```misa``` register.
+- This code tests generates tests to check the WARL property of the ```misa``` register.
 
 - ```misa``` has two fields, ```mxl[1:0]``` and an extensions field which is 26 bits wide,which have the WARL property.
 
@@ -62,11 +62,19 @@ We have verified the Machine CSRs.
 - Similarly for ```misa.extensions```, the test write_val is first checked if it is legal.If the value is legal,its written into ```misa.extensions```.  
 
 #### uatg_csrbox_warl_test_mtvec.py
-- This code tests generates tests to write to check the WARL property of the ```mtvec``` register.
+- This code tests generates tests to check the WARL property of the ```mtvec``` register.
 
-- Machine Trap Vector Base Address (MTVEC) register is used to store the address of the Trap handler.
-- The MTVEC register has the address of the trap handler. When a trap occurs (and is to be handled, not ignored), the Hardware set’s the program counter (PC) set to the value in the MTVEC register. This causes a jump to the first instruction in the trap handler routine.
-- We are testing if the reset value of the mtvec is alegal value and if it matches the reset value in the ISA spec.
+- Machine Trap Vector Base Address (MTVEC) register is used to store the address of the Trap handler.In simple terms mtvec tells where to trap.
+
+- The ```mtvec``` register has the address of the trap handler. When a trap occurs, the hardware set’s the program counter (PC) set to the value in the ```mtvec``` register. This causes a jump to the first instruction in the trap handler routine.
+
+- Some basic properties of ```mtvec``` register is:
+      - BASE must always be aligned on a 4-byte boundary
+      - BASE can be hardwired to hold a constant
+      - MODE is irect then pc is set to BASE
+      - MODE is vectored when pc is set to BASE + 4*(cause)
+
+- We are testing if the reset value of the ```mtvec``` is a legal value and if it matches the reset value in the ISA spec.
 
 
 #### uatg_csrbox_warl_test_mstatus.py
@@ -77,27 +85,33 @@ We have verified the Machine CSRs.
 - We have conducted one test by making an illegal write operation to the fs bits.
 
 - Another test is performed by executing ```fmul``` instruction after clearing the fs bits,and executing it again by setting the fs bits. The former should raise an illegal trap.
+
 - ```mstatus.mprv``` ,bits that modify priviledge levels for registers,is also WARL, which is tested by performing an illegal write operation.
 
 
 #### uatg_csrbox_warl_test_mscratch_mepc.py
-- This code tests generates tests to write to check the WARL property of the ```mscratch``` and ```mepc``` register
-- Machine Exception Program Counter (MEPC) is an XLEN-bit read/write register, which holds
-the address of the instruction which resulted in a trap.
-A Scratch Register (MSCRATCH) for Machine Mode Trap Handler. This register allows us to store
-the context of trap handlers in other privilege levels. This is of much use only in case of system
-switching privilege modes.
--In order to prevent overwrite and lose of the previous values, when a machine mode trap
-handler is invoked, the use of at least one general purpose register is needed.
-• MSCRATCH gives the software a register loaded with a base value, which can subsequently be
-used to save all remaining processor state.
-• Mostly, it may contain a frame or stack pointer to the “register save area”
-- When a trap (exception) is taken into machine mode, the virtual address of the instruction which
-resulted in an exception, is written into the mepc register. It serves the same purpose for the
-exception handler that the return address (ra) register serves for subroutine calls. There can be
-certain traps, which can lead to system halt. In that case, MEPC cannot be used to return back.
-- MEPC register cannot hold a program counter (pc) value that would cause an Instruction Address
-Misaligned exception.
+- This code tests generates tests to check the WARL property of the ```mscratch``` and ```mepc``` registers.
+
+- Machine Exception Program Counter (MEPC) is an XLEN-bit read/write register, which holds the address of the instruction which resulted in a trap.
+
+- Some basic properties about ```mepc``` register:
+      - It is written with virtual address of the instruction at which a trap was taken in machine mode.
+      - ```mepc``` = 0 always
+      - When IALIGN = 32, ```mepc```[1:0] = 0
+
+- ```mepc``` register cannot hold a program counter (pc) value that would cause an Instruction Address Misaligned exception.
+
+-  Scratch Register (MSCRATCH) for Machine Mode Trap Handler. This register allows us to store the context of trap handlers in other privilege levels. This is of much use only in case of system switching privilege modes.
+
+- In order to prevent overwrite and lose of the previous values, when a machine mode trap handler is invoked, the use of at least one general purpose register is needed.
+
+- ```mscratch``` gives the software a register loaded with a base value, which can subsequently be used to save all remaining processor state.
+
+- Some basic properties about ```mscratch``` register:
+   - It is a read/write register.
+   -  Useful as temporary storage in save/restore routines.
+
+- In simple terms ```mscratch``` and ```mepc``` tell us how to return from a trap.
 
 
 #### uatg_csrbox_csr_specific_misa.py
@@ -114,18 +128,16 @@ Misaligned exception.
 
 - 
 
--Disabling the misa.C extension requires the CSR instruction to be 4 byte aligned. else the disabling will be ignored. 
+- Disabling the misa.C extension requires the CSR instruction to be 4 byte aligned. else the disabling will be ignored. 
 
 - 
 
 #### uatg_csrbox_minstret.py
-- This code tests generates tests to write 
+- This code tests generates tests to write ```minstret```
 
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
+- We read ```minstret```, execute n operations and check if the ```minstret``` value must be +n from the previous readings.
 
--We read minstret, execute n operations and check if the minstret value must be +n from the previous readings
-
-- 
+- The ```minstret``` CSR holds a count of the number of instructions the hart has retired since some arbitrary time in the past. 
 
 - 
 
