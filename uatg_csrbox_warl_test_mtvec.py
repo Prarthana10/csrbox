@@ -27,30 +27,31 @@ class uatg_csrbox_warl_test_mtvec.(IPlugin):
             		self.xlen = 64
             		self.offset_inc = 8
             	
-				return True
 		self.bitmask = isa_yaml['hart0']['mtvec']['rv64']['base']['type']['warl']['legal']       #assuming bitmask is obtained
 		self.default_val = isa_yaml['hart0']['mtvec']['reset-val']
+		 
+	        return True
 		
 	def generate_asm(self) -> List[Dict[str, Union[Union[str, list], Any]]]:
         """
             Generates the ASM instructions for checking warl(write any read legal) registers
         """
-         asm=f'\tli x4,0xfffffffffffffffff\n'                    #load test value to x4
-         asm+=f'\tand x5,x4,{self.bitmask}\n'                   #test if x4 is legal value
-         asm+=f'\tneg {self.bitmask},{self.bitmask}\n'
-         asm+=f'\tand x6,{self.default_val},{self.bitmask}\n'
-         asm+=f'\tori x7,x5,x6\n'                                #(write_val & bitmask) | (default_val &~bitmask)   
-         asm+=f'\tbeq x7,{self.bitmask},loop\n'
-         asm+=f'loop:\n'
-         asm+=f'\tcsrrw x5,mtvec[61:0],x4\n'                      #write to mtvec if value is legal   
+        	asm=f'\tli x4,0xfffffffffffffffff\n'                    #load test value to x4
+        	asm+=f'\tand x5,x4,{self.bitmask}\n'                   #test if x4 is legal value
+        	asm+=f'\tneg {self.bitmask},{self.bitmask}\n'
+        	asm+=f'\tand x6,{self.default_val},{self.bitmask}\n'
+        	asm+=f'\tori x7,x5,x6\n'                                #(write_val & bitmask) | (default_val &~bitmask)   
+        	asm+=f'\tbeq x7,{self.bitmask},loop\n'
+        	asm+=f'loop:\n'
+        	asm+=f'\tcsrrw x5,mtvec[61:0],x4\n'                      #write to mtvec if value is legal   
          
-         compile_macros = []
+         	compile_macros = []
          
-         return [{
-         'asm_code': asm,
-         'asm_sig': '',
-        'compile_macros' : compile_macros
-        }] 
+         	return [{
+        	 'asm_code': asm,
+        	 'asm_sig': '',
+        	'compile_macros' : compile_macros
+       		 }] 
         
         	
         def check_log(self, log_file_path, reports_dir) -> bool:
