@@ -45,7 +45,7 @@ class uatg_csrbox_read_only_registers.(IPlugin):
         """
             Generates the ASM instructions for writing to read only registers
         """
-        	csr=[vendor_reg,arch_reg,imp_reg,hart_reg]
+        	csr=[self.vendor_reg,self.arch_reg,self.imp_reg,self.hart_reg]
         	
         	asm=f'\tli x3,0x3\n'
         	asm+=f'\tli x2,0x0\n'
