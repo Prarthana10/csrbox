@@ -18,11 +18,11 @@ We have verified the Machine CSRs.
 ## File Structure
 
 ```bash
-├── reference assembly codes
+├── reference assembly codes --Folder which has the assembly codes which we have used to write python scripts
 │   ├── test1.txt
-|   └── test2.txt
-|   └── test3.txt
-|   └── test4.txt
+│   └── test2.txt
+│   └── test3.txt
+│   └── test4.txt
 │   └── test5.txt
 ├── README.md -- Describes the idea behind each test
 ├── uatg_csrbox_read_only_registers.py -- Generates ASM to check whether the CSRs hold the same value,even after using different csr instructions
@@ -69,10 +69,10 @@ We have verified the Machine CSRs.
 - The ```mtvec``` register has the address of the trap handler. When a trap occurs, the hardware set’s the program counter (PC) set to the value in the ```mtvec``` register. This causes a jump to the first instruction in the trap handler routine.
 
 - Some basic properties of ```mtvec``` register is:
-      - BASE must always be aligned on a 4-byte boundary
-      - BASE can be hardwired to hold a constant
-      - MODE is irect then pc is set to BASE
-      - MODE is vectored when pc is set to BASE + 4*(cause)
+      -  BASE must always be aligned on a 4-byte boundary
+      -  BASE can be hardwired to hold a constant
+      -  MODE is irect then pc is set to BASE
+      -  MODE is vectored when pc is set to BASE + 4*(cause)
 
 - We are testing if the reset value of the ```mtvec``` is a legal value and if it matches the reset value in the ISA spec.
 
@@ -115,31 +115,25 @@ We have verified the Machine CSRs.
 
 
 #### uatg_csrbox_csr_specific_misa.py
-- This code tests 
-
-- The above registers are read-only and the values are pre-coded and obtained from the ISA spec
-
-- All the csr access instructions, ```csrrw```,```csrrs```,```csrrc``` and their immediate variants,```csrrwi```,```csrrsi```,```csrrci``` are used and a test value is written
-
-- Illegal exception has to be raised for writing into those registers
+- ```misa``` csr has a 26 bit field called extensions. These encode the standard extensions,with a single bit per letter of the alphabet.
+- These extension bits are WARL in nature. 
+- This code tests the enabling and disabling of ```misa.M```
+- M extension is the integer multiply/divide instruction.
+- The extension is first enabled and ```mul``` instruction is executed.It's then disabled and ```mul``` instruction executed. The latter should raise an illegal exception.
 
 #### uatg_csrbox_misa_c_ext.py
-- This code tests generates tests to write 
-
-- 
-
-- Disabling the misa.C extension requires the CSR instruction to be 4 byte aligned. else the disabling will be ignored. 
-
-- 
+- This code tests tests the ```misa.C``` extension of misa register.
+- This extension describes compressed instruction support.
+- Enabling or disabling this extension requires the instruction to be 4-byte aligned.
+- ```auipc``` instruction is used to align the instruction to disable ```misa.C``` at a 4-byte boundary and at a 2-byte boundry respectively.
+- At a 4-byte boundry,when the extension is disabled,executing a compressed instruction should raise a trap.
+- At a 2-byte boundary, the disabling is ignored and the compressed instruction is executed.
 
 #### uatg_csrbox_minstret.py
-- This code tests generates tests to write ```minstret```
-
+- This code tests generates tests to check ```minstret```
 - We read ```minstret```, execute n operations and check if the ```minstret``` value must be +n from the previous readings.
-
 - The ```minstret``` CSR holds a count of the number of instructions the hart has retired since some arbitrary time in the past. 
-
-- 
+- The difference in the values of ```minstret``` is compared with the number of instructions,and a branch happens if they are not the same. 
 
 
 ## Contributors
