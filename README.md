@@ -92,6 +92,8 @@ We have verified the Machine CSRs.
 #### uatg_csrbox_warl_test_mscratch_mepc.py
 - This code tests generates tests to check the WARL property of the ```mscratch``` and ```mepc``` registers.
 
+- Here , for ```mepc``` we are checking if the test value is a legal value and the writing it accordingly. For  ```mscratch``` we try to perform an illegal write , which should result in a trap.
+
 - Machine Exception Program Counter (MEPC) is an XLEN-bit read/write register, which holds the address of the instruction which resulted in a trap.
 
 - Some basic properties about ```mepc``` register:
