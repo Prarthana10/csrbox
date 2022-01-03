@@ -29,13 +29,13 @@ class uatg_csrbox_csr_specific_misa(IPlugin):
 	def generate_asm(self) -> List[Dict[str, Union[Union[str, list], Any]]]:
 	     
 		asm=f'\tli x4,0x01\n'
-		asm+=f'\tli x8,0x00\n'
-		asm+=f'\tli x8,0x02\n'
-		asm+=f'\tli x8,0x03\n'   
+		# asm+=f'\tli x5,0x00\n'
+		asm+=f'\tli x6,0x02\n'
+		asm+=f'\tli x5,0x03\n'   
 				
-		asm+=f'\tcsrrw x3,misa.M,0x1\n'		#setting misa.M to 1 and trying to execute multiply instruction
+		asm+=f'\tcsrrwi x3,misa.M,0x1\n'		#setting misa.M to 1 and trying to execute multiply instruction
 		asm+=f'\tmul x7,x6,x5\n'			#legal;should execute
-		asm+=f'\tcsrrw x3,misa.M,0x0\n'		#setting misa.M to 0 and trying to execute multiply
+		asm+=f'\tcsrrwi x3,misa.M,0x0\n'		#setting misa.M to 0 and trying to execute multiply
 		asm+=f'\tmul x7,x6,x5\n'			#should raise interrupt
 				
 				# compile macros for the test
