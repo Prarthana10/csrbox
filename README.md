@@ -71,7 +71,7 @@ We have verified the Machine CSRs.
 - Some basic properties of ```mtvec``` register is:
   -  BASE must always be aligned on a 4-byte boundary
   -  BASE can be hardwired to hold a constant
-  -  MODE is irect then pc is set to BASE
+  -  MODE is direct then pc is set to BASE
   -  MODE is vectored when pc is set to BASE + 4*(cause)
 
 - We are testing if the reset value of the ```mtvec``` is a legal value and if it matches the reset value in the ISA spec.
